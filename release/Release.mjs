@@ -78,6 +78,8 @@ export class Release {
 
                 if (buildDockerImageResult.includes('Success')) {
                     this.logger.info(`Docker-образ ${APP}:${this.currTagVersion} успешно собран`);
+                } else {
+                    this.logger.info(`Docker-образ ${APP}:${this.currTagVersion} не был собран`);
                 }
                 
                 await this._fixDockerBuildResult(
