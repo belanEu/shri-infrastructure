@@ -46,7 +46,7 @@ export class Tracker {
 
     /**
      * @param {Object} body 
-     * @returns {Promise<boolean>}
+     * @returns {Promise<Object>}
      */
     static async createTask(body) {
         const res = fetch(
