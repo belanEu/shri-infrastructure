@@ -11,6 +11,9 @@ jobs:
         name: 'Checkout source'
         with:
           fetch-depth: 0
+    
+      - name: 'Fetch tags'
+        run: git fetch --prune --unshallow --tags --force
 
       - name: 'Setup node'
         uses: actions/setup-node@v1
