@@ -6,14 +6,25 @@ export class Release {
     constructor(logger) {
         this.logger = logger;
         this.logger.info('Начало выполнения скрипта');
-        
-        this.currTagVersion = bash('git describe --abbrev=0');
-        this.prevTagVersion = bash('git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)"');
-        this.logger.info(`Версия текущего тэга релиза: ${this.currTagVersion}`);
-        this.logger.info(`Версия предыдущего тэга релиза: ${this.prevTagVersion}`);
+        this._initTags();
+        if (this.currTagVersion !== null) {
+            this.logger.info(`Версия текущего тэга релиза: ${this.currTagVersion}`);
+            this.logger.info(`Версия предыдущего тэга релиза: ${this.prevTagVersion}`);
 
-        this._initReleaseChanges();
-        this.logger.info('Оформлен changelog');
+            this._initReleaseChanges();
+            this.logger.info('Оформлен changelog');
+        }
+    }
+
+    _initTags() {
+        try {
+            this.currTagVersion = bash('git describe --abbrev=0');
+        } catch (err) {
+            this.currTagVersion = null;
+            this.logger.warn('В репозитории не существует тэгов. Окончание выполнения скрипта');
+            return;
+        }
+        this.prevTagVersion = bash('git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)"');
     }
 
     _initReleaseChanges() {
@@ -25,6 +36,10 @@ export class Release {
     }
 
     async run() {
+        if (this.currTagVersion === null) {
+            return;
+        }
+
         this.logger.info('Проверка задач в трекере по текущему тэгу');
         const tasks = await this._getTasks(this.currTagVersion);
         let taskId = tasks.length > 0 ? tasks[0].id : null;
