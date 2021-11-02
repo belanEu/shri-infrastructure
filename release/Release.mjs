@@ -101,7 +101,6 @@ export class Release {
     }
 
     /**
-     * 
      * @param {Number|String} taskId 
      * @returns {Promise<boolean>}
      */
@@ -112,6 +111,9 @@ export class Release {
         );
     }
 
+    /**
+     * @returns {Promise<Object>}
+     */
     async _createTaskReleaseData() {
         return await Tracker.createTask({
             queue: QUEUE_NAME,
@@ -144,14 +146,24 @@ export class Release {
         );
     }
 
+    /**
+     * @returns {Promise<String>}
+     */
     async _execTests() {
         return (await bashAsync('npm run test')).stderr.replace(/\n/g, '<br/>');
     }
 
+    /**
+     * @param {String} result 
+     * @returns {Promise<boolean>} 
+     */
     _checkTestsResult(result) {
         return !(result.includes('fail') && result.includes('FAIL'));
     }
 
+    /**
+     * @returns {Promise<String>}
+     */
     async _buildDockerImage() {
         return (await bashAsync(`docker build . -t ${APP}:${this.currTagVersion}`)).stdout
                 .split('\n')
