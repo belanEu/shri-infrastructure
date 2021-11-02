@@ -75,7 +75,7 @@ export class Release {
                 this.logger.info('Сборка Docker-образа. Добавление результата в задачу по окончанию');
 
                 let buildDockerImageResult = await this._buildDockerImage();
-
+                this.logger.info(buildDockerImageResult);
                 if (buildDockerImageResult.includes('Success')) {
                     this.logger.info(`Docker-образ ${APP}:${this.currTagVersion} успешно собран`);
                 } else {
