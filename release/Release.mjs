@@ -24,7 +24,12 @@ export class Release {
             this.logger.warn('В репозитории не существует тэгов. Окончание выполнения скрипта');
             return;
         }
-        this.prevTagVersion = bash('git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)"');
+        try {
+            this.prevTagVersion = bash('git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)"');
+        } catch (err) {
+            this.prevTagVersion = bash("git log --oneline | tail -n 1 | awk '{print $1}'");
+            this.logger.info('В репозитории всего один тэг. В качестве предыдущего тэга возьмется хэш первого коммита');
+        }
     }
 
     _initReleaseChanges() {
