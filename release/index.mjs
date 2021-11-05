@@ -11,4 +11,5 @@ try {
     release.run();
 } catch (err) {
     logger.error(err);
+    throw err;
 }
