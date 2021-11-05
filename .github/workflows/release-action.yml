@@ -9,15 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: 'Checkout source'
-        with:
-          ref: 'master'
-          fetch-depth: 0
-      - run: |
-            git fetch --prune --unshallow --tags
-            git tag --list
-
-      - name: 'Checkout master'
-        run: git checkout master
+      - run: git tag --list
 
       - name: 'Setup node'
         uses: actions/setup-node@v1
