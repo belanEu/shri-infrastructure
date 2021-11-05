@@ -11,7 +11,6 @@ jobs:
         name: 'Checkout source'
       - run: |
             git fetch --prune --tags -f
-            git pull
             git tag
 
       - name: 'Setup node'
