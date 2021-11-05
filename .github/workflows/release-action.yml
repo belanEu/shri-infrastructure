@@ -22,4 +22,8 @@ jobs:
         run: npm i
         
       - name: 'Run'
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          QUEUE_ID: ${{ secrets.QUEUE_ID }}
+          QUEUE_NAME: ${{ secrets.QUEUE_NAME }}
         run: npm run release
