@@ -17,8 +17,6 @@ export class Release {
     }
 
     _initTags() {
-        this.logger.info(bash('git fetch --prune --tags'));
-        this.logger.info(bash('git tag --list'));
         try {
             this.currTagVersion = bash('git describe --abbrev=0');
         } catch (err) {
